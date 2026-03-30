@@ -13,3 +13,6 @@
 .externalNativeBuild
 .cxx
 local.properties
+/material-theme.zip
+/.idea
+/resource-files
