@@ -2,6 +2,7 @@ package com.example.anime_list.ui.auth
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,11 +36,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.anime_list.ui.shared.DefaultInput
 
 
 @Composable
-fun LoginScreen(modifier: Modifier = Modifier) {
+fun LoginScreen(modifier: Modifier = Modifier, navController: NavController) {
     Box(
         modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.primary)
     ) {
@@ -51,7 +53,7 @@ fun LoginScreen(modifier: Modifier = Modifier) {
             shape = RoundedCornerShape(topStart = 48.dp, topEnd = 48.dp)
 
         ) {
-            LoginForm()
+            LoginForm(navController = navController)
         }
 
     }
@@ -60,7 +62,7 @@ fun LoginScreen(modifier: Modifier = Modifier) {
 
 
 @Composable
-fun LoginForm(modifier: Modifier = Modifier) {
+fun LoginForm(modifier: Modifier = Modifier, navController: NavController) {
 
     Column(modifier = Modifier.padding(24.dp)) {
 
@@ -88,7 +90,9 @@ fun LoginForm(modifier: Modifier = Modifier) {
                         color = MaterialTheme.colorScheme.primary
                     )
                 }
-                Button(onClick = {},modifier = Modifier.padding(vertical = 12.dp).fillMaxWidth(), shape = RoundedCornerShape(8.dp)) {
+                Button(onClick = {
+                    navController.navigate("home")
+                },modifier = Modifier.padding(vertical = 12.dp).fillMaxWidth(), shape = RoundedCornerShape(8.dp)) {
                     Text("Login")
                 }
             }
@@ -151,7 +155,13 @@ fun LoginForm(modifier: Modifier = Modifier) {
                 Row(
                     modifier = Modifier.padding(top = 24.dp)
                 ){
-                    Text("Sie Haben Keine Accounten? OH MEIN GOTT!", color = MaterialTheme.colorScheme.primary)
+                    Text(
+                        "Sie Haben Keine Accounten? OH MEIN GOTT!",
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.clickable{
+                            navController.navigate("signup")
+                        }
+                    )
                 }
             }
 

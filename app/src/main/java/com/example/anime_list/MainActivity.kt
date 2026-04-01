@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.anime_list.ui.auth.AuthScreen
 import com.example.anime_list.ui.auth.LoginScreen
 import com.example.anime_list.ui.auth.SignupScreen
 //import com.example.anime_list.ui.theme.Apptheme
@@ -28,8 +29,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             AppTheme(dynamicColor = false) {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-//                    LoginScreen(Modifier.padding(innerPadding))
-                    SignupScreen(modifier = Modifier.padding(innerPadding))
+                    AuthScreen(modifier = Modifier.fillMaxSize().padding(innerPadding))
                 }
             }
         }
@@ -48,7 +48,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         )) {
             Text("click me")
         }
-        LoginScreen()
+//        LoginScreen()
     }
 }
 

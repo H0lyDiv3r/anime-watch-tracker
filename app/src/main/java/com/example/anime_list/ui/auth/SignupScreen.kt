@@ -28,10 +28,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.anime_list.ui.shared.DefaultInput
 
 @Composable
-fun SignupScreen(modifier: Modifier = Modifier) {
+fun SignupScreen(modifier: Modifier = Modifier, navController: NavController) {
     Box(
         modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.primary)
     ){
@@ -40,14 +41,14 @@ fun SignupScreen(modifier: Modifier = Modifier) {
             shape = RoundedCornerShape(topStart = 48.dp, topEnd = 48.dp)
         ) {
 
-            SignupForm()
+            SignupForm(navController)
         }
     }
 
 }
 
 @Composable
-fun SignupForm() {
+fun SignupForm(navController: NavController) {
     Column(
         modifier = Modifier.padding(32.dp)
     ) {
@@ -57,7 +58,9 @@ fun SignupForm() {
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            IconButton(onClick = {}, colors = IconButtonDefaults.iconButtonColors(
+            IconButton(onClick = {
+                navController.navigate("login")
+            }, colors = IconButtonDefaults.iconButtonColors(
                 contentColor = MaterialTheme.colorScheme.primary
             )) {
                 Icon(
