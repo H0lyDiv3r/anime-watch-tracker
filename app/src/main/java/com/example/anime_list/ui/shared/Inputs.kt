@@ -11,7 +11,11 @@ import androidx.compose.ui.unit.dp
 
 
 @Composable
-fun DefaultInput(value: String, onChange: (String)->Unit, label: String, modifier: Modifier= Modifier.fillMaxWidth().padding(vertical = 8.dp)) {
+fun DefaultInput(
+    value: String,
+    onChange: (String)->Unit,
+    label: String,
+    modifier: Modifier= Modifier.fillMaxWidth().padding(vertical = 8.dp)) {
 
     OutlinedTextField(
         value = value,
