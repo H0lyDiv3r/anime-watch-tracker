@@ -28,6 +28,10 @@ import androidx.compose.material3.Shapes
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.R
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -63,6 +67,8 @@ fun LoginScreen(modifier: Modifier = Modifier, navController: NavController) {
 
 @Composable
 fun LoginForm(modifier: Modifier = Modifier, navController: NavController) {
+    var username by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
 
     Column(modifier = Modifier.padding(24.dp)) {
 
@@ -79,8 +85,8 @@ fun LoginForm(modifier: Modifier = Modifier, navController: NavController) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                DefaultInput(value = "", onChange = {}, label = "Username")
-                DefaultInput(value = "", onChange = {}, label = "Email")
+                DefaultInput(value = username, onChange = {username = it}, label = "Username")
+                DefaultInput(value = email, onChange = {email = it}, label = "Email")
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
@@ -91,7 +97,8 @@ fun LoginForm(modifier: Modifier = Modifier, navController: NavController) {
                     )
                 }
                 Button(onClick = {
-                    navController.navigate("home")
+//                    navController.navigate("home")
+                    println("showing the data ${username + email}")
                 },modifier = Modifier.padding(vertical = 12.dp).fillMaxWidth(), shape = RoundedCornerShape(8.dp)) {
                     Text("Login")
                 }
