@@ -60,8 +60,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             AppTheme(dynamicColor = false) {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-//                    AuthScreen(modifier = Modifier.fillMaxSize().padding(innerPadding))
-                    Greeting("abc", viewModel=authViewModel)
+                    AuthScreen(
+                        modifier = Modifier.fillMaxSize().padding(innerPadding),
+                        authViewModel = authViewModel
+                    )
+//                    Greeting("abc", viewModel=authViewModel)
                 }
             }
         }
@@ -92,7 +95,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier,viewModel: AuthViewMode
             modifier = modifier
         )
         Button( onClick = {
-                viewModel.Signup()
+//                viewModel.Signin()
         }, colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primary
         )) {

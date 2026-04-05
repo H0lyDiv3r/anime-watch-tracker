@@ -27,7 +27,9 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.R
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,7 +47,7 @@ import com.example.anime_list.ui.shared.DefaultInput
 
 
 @Composable
-fun LoginScreen(modifier: Modifier = Modifier, navController: NavController) {
+fun LoginScreen(modifier: Modifier = Modifier, navController: NavController, authViewModel: AuthViewModel) {
     Box(
         modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.primary)
     ) {
@@ -57,7 +59,7 @@ fun LoginScreen(modifier: Modifier = Modifier, navController: NavController) {
             shape = RoundedCornerShape(topStart = 48.dp, topEnd = 48.dp)
 
         ) {
-            LoginForm(navController = navController)
+            LoginForm(navController = navController, authViewModel = authViewModel)
         }
 
     }
@@ -66,9 +68,27 @@ fun LoginScreen(modifier: Modifier = Modifier, navController: NavController) {
 
 
 @Composable
-fun LoginForm(modifier: Modifier = Modifier, navController: NavController) {
-    var username by remember { mutableStateOf("") }
+fun LoginForm(modifier: Modifier = Modifier, navController: NavController, authViewModel: AuthViewModel) {
     var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    val uiState by authViewModel.uiState.collectAsState()
+
+    LaunchedEffect(uiState) {
+
+//        when(uiState) {
+//            is AuthUiState.Success ->{
+//            }
+//            else -> {
+//            }
+//        }
+
+        if(uiState is AuthUiState.Success){
+            navController.navigate("home")
+
+        }
+
+    }
+
 
     Column(modifier = Modifier.padding(24.dp)) {
 
@@ -85,8 +105,8 @@ fun LoginForm(modifier: Modifier = Modifier, navController: NavController) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                DefaultInput(value = username, onChange = {username = it}, label = "Username")
                 DefaultInput(value = email, onChange = {email = it}, label = "Email")
+                DefaultInput(value = password, onChange = {password = it}, label = "Password")
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
@@ -97,8 +117,7 @@ fun LoginForm(modifier: Modifier = Modifier, navController: NavController) {
                     )
                 }
                 Button(onClick = {
-//                    navController.navigate("home")
-                    println("showing the data ${username + email}")
+                    authViewModel.Signin(emailString = email, passwordString = password)
                 },modifier = Modifier.padding(vertical = 12.dp).fillMaxWidth(), shape = RoundedCornerShape(8.dp)) {
                     Text("Login")
                 }

@@ -22,6 +22,12 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,10 +35,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.anime_list.supabase
 import com.example.anime_list.ui.shared.DefaultInput
+import io.github.jan.supabase.auth.auth
 
 @Composable
-fun SignupScreen(modifier: Modifier = Modifier, navController: NavController) {
+fun SignupScreen(modifier: Modifier = Modifier, navController: NavController, authViewModel: AuthViewModel) {
     Box(
         modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.primary)
     ){
@@ -41,14 +49,27 @@ fun SignupScreen(modifier: Modifier = Modifier, navController: NavController) {
             shape = RoundedCornerShape(topStart = 48.dp, topEnd = 48.dp)
         ) {
 
-            SignupForm(navController)
+            SignupForm(navController,authViewModel = authViewModel)
         }
     }
 
 }
 
 @Composable
-fun SignupForm(navController: NavController) {
+fun SignupForm(navController: NavController,authViewModel: AuthViewModel) {
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
+
+    val uiState by authViewModel.uiState.collectAsState()
+
+    LaunchedEffect(uiState) {
+
+        if(uiState is AuthUiState.Success){
+            navController.navigate("home")
+        }
+    }
+
     Column(
         modifier = Modifier.padding(32.dp)
     ) {
@@ -86,12 +107,16 @@ fun SignupForm(navController: NavController) {
 
             }
             Column(modifier = Modifier.padding(vertical = 32.dp)) {
-                DefaultInput(value = "", label = "Email", onChange = {})
+                DefaultInput(value = email, label = "Email", onChange = {email=it})
                 DefaultInput(value = "", label = "PhoneNumber", onChange = {})
-                DefaultInput(value = "", label = "Password", onChange = {})
-                DefaultInput(value = "", label = "Confirm Password", onChange = {})
+                DefaultInput(value = password, label = "Password", onChange = {password=it})
+                DefaultInput(value = confirmPassword, label = "Confirm Password", onChange = {confirmPassword=it})
             }
-            Button(onClick = {},modifier = Modifier.padding(vertical = 12.dp).fillMaxWidth(), shape = RoundedCornerShape(8.dp)) {
+            Button(onClick = {
+                if(password == confirmPassword){
+                    authViewModel.Signup(emailString = email,passwordString = password)
+                }
+            },modifier = Modifier.padding(vertical = 12.dp).fillMaxWidth(), shape = RoundedCornerShape(8.dp)) {
                 Text("Signup")
             }
 
