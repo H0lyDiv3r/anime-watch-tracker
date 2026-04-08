@@ -43,7 +43,7 @@ fun BottomNav(navController: NavController) {
             NavigationBarItem(
                 selected = currentRoute == item.route,
                 onClick = {
-
+                    navController.navigate(item.route)
                 },
                 icon = {
                     Icon(
@@ -53,9 +53,6 @@ fun BottomNav(navController: NavController) {
                 },
                 label = { Text(item.label) }
             )
-
-
-
         }
     }
 

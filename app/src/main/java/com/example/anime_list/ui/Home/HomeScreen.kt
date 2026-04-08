@@ -1,5 +1,6 @@
 package com.example.anime_list.ui.Home
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,10 +25,12 @@ fun HomeScreen(navController: NavController) {
         }
 
     }
-    Button(onClick = {
-        authViewModel.SignOut()
-    }
-    ){
-        Text("logout")
+    Column() {
+        Button(onClick = {
+            authViewModel.SignOut()
+        }
+        ){
+            Text("logout")
+        }
     }
 }
