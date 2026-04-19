@@ -60,6 +60,10 @@ dependencies {
     implementation("io.github.jan-tennert.supabase:auth-kt")
     implementation("io.github.jan-tennert.supabase:realtime-kt")
 
+
+    implementation("io.coil-kt:coil-compose:2.7.0")
+    implementation("androidx.compose.foundation:foundation:1.7.0")
+
     // Retrofit
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
     implementation("com.squareup.retrofit2:retrofit:2.11.0")

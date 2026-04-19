@@ -12,8 +12,9 @@ class DefaultAppContainer: AppContainer {
 
 
     private val jikanBaseUrl = "https://api.jikan.moe/v4/"
+    private val json = Json { ignoreUnknownKeys = true }
     private val retrofit:Retrofit = Retrofit.Builder()
-        .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+        .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
         .baseUrl(jikanBaseUrl)
         .build()
 
