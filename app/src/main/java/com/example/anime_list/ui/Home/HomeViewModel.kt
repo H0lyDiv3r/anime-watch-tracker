@@ -33,10 +33,14 @@ class HomeViewModel( private val jikanRepository: JikanRepository): ViewModel() 
     var nextSeasonUiState: HomeUiState by mutableStateOf(value = HomeUiState.Loading)
         private set
 
+    var trendingUiState: HomeUiState by mutableStateOf(value = HomeUiState.Loading)
+        private set
+
 
     init {
         getSeasonNow()
         getNextSeason()
+        getTrending()
     }
 
     fun getSeasonNow() {
@@ -58,6 +62,19 @@ class HomeViewModel( private val jikanRepository: JikanRepository): ViewModel() 
             nextSeasonUiState = HomeUiState.Loading
             nextSeasonUiState = try {
                 HomeUiState.Success(jikanRepository.getNextSeason().body()?.data)
+            }catch (e: IOException) {
+                HomeUiState.Error
+            }catch (e: HttpException) {
+                HomeUiState.Error
+            }
+        }
+    }
+
+    fun getTrending() {
+        viewModelScope.launch {
+            trendingUiState = HomeUiState.Loading
+            trendingUiState = try {
+                HomeUiState.Success(jikanRepository.getTrending().body()?.data)
             }catch (e: IOException) {
                 HomeUiState.Error
             }catch (e: HttpException) {

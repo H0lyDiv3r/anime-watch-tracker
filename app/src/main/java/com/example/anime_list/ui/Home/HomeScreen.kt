@@ -82,6 +82,18 @@ fun HomeScreen(navController: NavController, modifier:Modifier = Modifier) {
             }
 
         }
+
+        Column(
+            modifier = Modifier.padding(top = 12.dp)
+        ) {
+
+            when (homeViewModel.trendingUiState) {
+                is HomeUiState.Loading -> Text("loading")
+                is HomeUiState.Success -> Trending(animes = ((homeViewModel.trendingUiState) as HomeUiState.Success).animes)
+                is HomeUiState.Error -> Text("error")
+            }
+
+        }
     }
 }
 
@@ -134,6 +146,33 @@ fun NextSeason(animes: List<Anime>?,modifier:Modifier= Modifier){
 
     }
 }
+
+
+@Composable
+fun Trending(animes: List<Anime>?,modifier:Modifier= Modifier){
+
+    val pagerState = rememberPagerState(pageCount = { animes?.size ?: 0 })
+
+
+    Column( modifier = modifier.padding(4.dp)) {
+
+        Text("Trending",modifier= Modifier.padding(8.dp), fontSize = 18.sp, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.primary)
+        HorizontalPager (
+            state = pagerState,
+        ) { page ->
+
+            val anime = animes?.getOrNull(page)
+            anime?.let { AnimeCard(it,
+                modifier =  Modifier
+                    .fillMaxWidth()
+                    .height(140.dp)
+                    .padding( 8.dp)
+            ) }
+        }
+
+    }
+}
+
 @Composable
 fun AnimeCard(anime: Anime, modifier: Modifier = Modifier) {
     Card(

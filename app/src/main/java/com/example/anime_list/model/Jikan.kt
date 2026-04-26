@@ -35,9 +35,17 @@ data class PropDate(
 )
 
 @Serializable
+data class Prop(
+    val from: PropDate? = null,
+    val to: PropDate? = null,
+    val string: String? = null
+)
+
+@Serializable
 data class Aired(
     val from: String? = null,
-    val to: String? = null
+    val to: String? = null,
+    val prop: Prop? = null
 )
 
 @Serializable
@@ -119,6 +127,12 @@ data class SeasonNowResponse(
 
 @Serializable
 data class SeasonUpcomingResponse(
+    val data: List<Anime>? = null,
+    val pagination: Pagination? = null
+)
+
+@Serializable
+data class TopAnimeResponse(
     val data: List<Anime>? = null,
     val pagination: Pagination? = null
 )

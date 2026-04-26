@@ -2,6 +2,7 @@ package com.example.anime_list.network
 
 import com.example.anime_list.model.SeasonNowResponse
 import com.example.anime_list.model.SeasonUpcomingResponse
+import com.example.anime_list.model.TopAnimeResponse
 import retrofit2.Response
 import retrofit2.http.GET
 
@@ -17,7 +18,8 @@ interface JikanApiService {
     suspend fun getNextSeason(): Response<SeasonUpcomingResponse>
 
 
-    suspend fun getTrending(): Response<SeasonNowResponse>
+    @GET(value = "top/anime")
+    suspend fun getTrending(): Response<TopAnimeResponse>
 
     //top anime
 
