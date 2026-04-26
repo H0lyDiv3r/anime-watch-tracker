@@ -116,3 +116,9 @@ data class SeasonNowResponse(
     val data: List<Anime>? = null,
     val pagination: Pagination? = null
 )
+
+@Serializable
+data class SeasonUpcomingResponse(
+    val data: List<Anime>? = null,
+    val pagination: Pagination? = null
+)

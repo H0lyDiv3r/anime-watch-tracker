@@ -11,6 +11,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import coil.network.HttpException
 import com.example.anime_list.MainContainer
+import com.example.anime_list.Screen
 import com.example.anime_list.data.JikanRepository
 import com.example.anime_list.model.Anime
 import com.example.anime_list.model.SeasonNowResponse
@@ -26,23 +27,40 @@ sealed interface HomeUiState{
 
 class HomeViewModel( private val jikanRepository: JikanRepository): ViewModel() {
 
-    var homeUiState: HomeUiState by mutableStateOf(HomeUiState.Loading)
+    var thisSeasonUiState: HomeUiState by mutableStateOf(HomeUiState.Loading)
+        private set
+
+    var nextSeasonUiState: HomeUiState by mutableStateOf(value = HomeUiState.Loading)
         private set
 
 
     init {
         getSeasonNow()
+        getNextSeason()
     }
 
     fun getSeasonNow() {
         viewModelScope.launch {
 
-            homeUiState = HomeUiState.Loading
-            homeUiState = try {
+            thisSeasonUiState = HomeUiState.Loading
+            thisSeasonUiState = try {
                 HomeUiState.Success(jikanRepository.getThisSeaon().body()?.data)
             } catch(e: IOException) {
                 HomeUiState.Error
             } catch (e: HttpException){
+                HomeUiState.Error
+            }
+        }
+    }
+
+    fun getNextSeason() {
+        viewModelScope.launch {
+            nextSeasonUiState = HomeUiState.Loading
+            nextSeasonUiState = try {
+                HomeUiState.Success(jikanRepository.getNextSeason().body()?.data)
+            }catch (e: IOException) {
+                HomeUiState.Error
+            }catch (e: HttpException) {
                 HomeUiState.Error
             }
         }

@@ -49,7 +49,7 @@ import com.example.anime_list.ui.auth.AuthViewModel
 import io.github.jan.supabase.auth.auth
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, modifier:Modifier = Modifier) {
     val authViewModel: AuthViewModel = viewModel()
     val homeViewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory)
     val uiState by authViewModel.uiState.collectAsState()
@@ -63,57 +63,77 @@ fun HomeScreen(navController: NavController) {
 
     }
 
-    Column() {
+    Column(modifier = modifier) {
 
-        when (homeViewModel.homeUiState) {
+        when (homeViewModel.thisSeasonUiState) {
             is HomeUiState.Loading -> Text("loading")
-            is HomeUiState.Success -> Show(animes= (homeViewModel.homeUiState as HomeUiState.Success).animes)
+            is HomeUiState.Success -> ThisSeason(animes= (homeViewModel.thisSeasonUiState as HomeUiState.Success).animes)
             is HomeUiState.Error -> Text("error")
+        }
+
+        Column(
+            modifier = Modifier.padding(top = 12.dp)
+        ) {
+
+            when (homeViewModel.nextSeasonUiState) {
+                is HomeUiState.Loading -> Text("loading")
+                is HomeUiState.Success -> NextSeason(animes = ((homeViewModel.nextSeasonUiState) as HomeUiState.Success).animes)
+                is HomeUiState.Error -> Text("error")
+            }
+
         }
     }
 }
 
 @Composable
-fun Show(animes: List<Anime>?){
+fun ThisSeason(animes: List<Anime>?,modifier:Modifier= Modifier){
 
     val pagerState = rememberPagerState(pageCount = { animes?.size ?: 0 })
 
 
+    Column( modifier = modifier.padding(4.dp)) {
 
-    HorizontalPager (
-        state = pagerState,
-    ) { page ->
+        Text("This Season",modifier= Modifier.padding(8.dp), fontSize = 18.sp, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.primary)
+        HorizontalPager (
+            state = pagerState,
+        ) { page ->
 
-        val anime = animes?.getOrNull(page)
-        anime?.let { AnimeCard(it,
-            modifier =  Modifier
-                .fillMaxWidth()
-                .height(140.dp)
-                .padding(8.dp)
+            val anime = animes?.getOrNull(page)
+            anime?.let { AnimeCard(it,
+                modifier =  Modifier
+                    .fillMaxWidth()
+                    .height(140.dp)
+                    .padding( 8.dp)
             ) }
-//        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-//            Text("Page $page")
-//        }
+        }
+
     }
-//    LazyRow () {
-//        items(items = animes ?: emptyList() ){ anime: Anime ->
-//
-////            Text(text = anime.title ?: "")
-//
-//            AnimeCard(
-//                anime,
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .height(250.dp)  // Fixed total height - adjust as needed
-//                    .padding(8.dp)
-//
-//            )
-//
-//        }
-//    }
 }
 
+@Composable
+fun NextSeason(animes: List<Anime>?,modifier:Modifier= Modifier){
 
+    val pagerState = rememberPagerState(pageCount = { animes?.size ?: 0 })
+
+
+    Column( modifier = modifier.padding(4.dp)) {
+
+        Text("Next Season",modifier= Modifier.padding(8.dp), fontSize = 18.sp, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.primary)
+        HorizontalPager (
+            state = pagerState,
+        ) { page ->
+
+            val anime = animes?.getOrNull(page)
+            anime?.let { AnimeCard(it,
+                modifier =  Modifier
+                    .fillMaxWidth()
+                    .height(140.dp)
+                    .padding( 8.dp)
+            ) }
+        }
+
+    }
+}
 @Composable
 fun AnimeCard(anime: Anime, modifier: Modifier = Modifier) {
     Card(

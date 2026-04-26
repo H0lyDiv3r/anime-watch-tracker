@@ -75,7 +75,6 @@ fun NavTree() {
     }) {innerPadding ->
 
         NavHost(
-            modifier = Modifier.padding(innerPadding),
             navController = navController,
             startDestination = Screen.Login.route
         ){
@@ -89,7 +88,7 @@ fun NavTree() {
                 SignupScreen(navController = navController, authViewModel = authViewModel)
             }
             composable (route = Screen.Home.route ) {
-                HomeScreen(navController)
+                HomeScreen(navController, Modifier.padding(innerPadding))
             }
             composable (route = Screen.Discover.route) {
                 Text("discover")
